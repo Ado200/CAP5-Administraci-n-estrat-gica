@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planeación estratégica: Portada y mapa conceptual</title>
+<style>
+  :root {
+    --ink: #111827;
+    --muted: #6b7280;
+    --line: #d1d5db;
+    --accent: #1e3a8a;
+    --accent-2: #4338ca;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: #e5e7eb;
+    font-family: Georgia, "Times New Roman", serif;
+    color: var(--ink);
+  }
+  .sans { font-family: Arial, Helvetica, sans-serif; }
+
+  /* ---------- Barra superior ---------- */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: #fff;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  .tab {
+    border: 1px solid var(--line);
+    background: #fff;
+    color: #374151;
+    padding: 9px 18px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .tab.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* ---------- PORTADA ---------- */
+  .portada-wrap {
+    display: flex;
+    justify-content: center;
+    padding: 32px 12px;
+  }
+  .page {
+    width: 794px;
+    max-width: 100%;
+    min-height: 1123px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 30px rgba(0,0,0,.15);
+    border-top: 10px solid var(--accent);
+  }
+  .p-header {
+    padding: 40px 56px 22px;
+    border-bottom: 2px solid var(--ink);
+    text-align: center;
+  }
+  .brand {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 12px;
+    line-height: 1;
+  }
+  .brand .big { font-size: 68px; font-weight: 700; letter-spacing: -1px; }
+  .brand .name { text-align: left; font-size: 30px; padding-bottom: 4px; }
+  .brand-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  .slogan {
+    margin-top: 8px;
+    font-size: 12px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  .title-block { text-align: center; padding: 64px 56px 30px; }
+  .eyebrow {
+    font-size: 13px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  .title-block h1 { margin: 14px 0 10px; font-size: 46px; font-weight: 700; color: var(--accent); }
+  .title-block .topic { font-style: italic; font-size: 20px; color: #374151; }
+  .rule { width: 120px; height: 3px; background: var(--accent-2); margin: 26px auto 0; }
+
+  .data-card {
+    margin: 36px 56px 0;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .data-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    align-items: center;
+    border-bottom: 1px solid var(--line);
+  }
+  .data-row:last-child { border-bottom: none; }
+  .data-label {
+    background: #f3f4f6;
+    padding: 16px 20px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: #374151;
+    font-family: Arial, Helvetica, sans-serif;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+  }
+  .data-value { padding: 16px 22px; font-size: 19px; font-weight: 600; }
+
+  .actions { margin: 40px 56px 0; text-align: center; }
+  .btn {
+    display: inline-block;
+    padding: 14px 28px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: .03em;
+    box-shadow: 0 6px 16px rgba(67,56,202,.3);
+  }
+  .btn:hover { filter: brightness(1.08); }
+  .btn-note { margin-top: 10px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: var(--muted); }
+
+  .p-footer {
+    margin-top: auto;
+    padding: 28px 56px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    color: #374151;
+  }
+  .p-footer .date { font-weight: 700; color: var(--ink); }
+
+  /* ---------- MAPA CONCEPTUAL ---------- */
+  .mapa-wrap {
+    padding: 28px 16px 48px;
+    background: radial-gradient(circle at top, #ffffff 0%, #f1f5f9 70%);
+    min-height: calc(100vh - 60px);
+  }
+  .mapa { max-width: 1200px; margin: 0 auto; font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; color: #1e293b; line-height: 1.45; }
+  .map-head { text-align: center; margin-bottom: 26px; }
+  .map-head .kicker { display: inline-block; font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; color: #64748b; margin-bottom: 6px; }
+  .map-head h1 { margin: 0; font-size: 1.7rem; font-weight: 700; }
+  .map-head p { margin: 6px 0 0; color: #64748b; font-size: .95rem; }
+
+  .root {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 20px 24px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #1e3a8a, #4338ca);
+    color: #fff;
+    text-align: center;
+    box-shadow: 0 12px 30px rgba(67,56,202,.30);
+  }
+  .root h2 { margin: 0 0 4px; font-size: 1.25rem; }
+  .root span { font-size: .9rem; opacity: .92; }
+  .trunk { width: 3px; height: 36px; margin: 0 auto; background: #94a3b8; border-radius: 2px; }
+  .bus { height: 3px; max-width: 88%; margin: 0 auto; background: #94a3b8; border-radius: 2px; }
+
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px 22px; margin-top: 26px; }
+  @media (max-width: 960px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 620px) { .grid { grid-template-columns: 1fr; } }
+
+  .branch {
+    position: relative;
+    background: #fff;
+    border-radius: 16px;
+    padding: 0 0 14px;
+    box-shadow: 0 4px 14px rgba(15,23,42,.08);
+  }
+  .branch::before {
+    content: "";
+    position: absolute;
+    top: -26px;
+    left: 50%;
+    width: 3px;
+    height: 26px;
+    background: #94a3b8;
+    transform: translateX(-50%);
+  }
+  .branch-head {
+    background: var(--accent-c);
+    color: #fff;
+    border-radius: 16px 16px 0 0;
+    padding: 12px 16px;
+    font-weight: 700;
+    font-size: 1.02rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .num {
+    flex: 0 0 auto;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.22);
+    display: grid;
+    place-items: center;
+    font-size: .9rem;
+  }
+  .branch-body { padding: 12px 16px 0; }
+  .group { margin-top: 10px; }
+  .group:first-child { margin-top: 0; }
+  .group h3 { margin: 0 0 6px; font-size: .78rem; text-transform: uppercase; letter-spacing: .07em; color: var(--accent-c); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    background: color-mix(in srgb, var(--accent-c) 12%, white);
+    border: 1px solid color-mix(in srgb, var(--accent-c) 35%, white);
+    border-radius: 999px;
+    padding: 3px 10px;
+    font-size: .84rem;
+  }
+  ul.tree { list-style: none; margin: 0; padding: 0 0 0 4px; }
+  ul.tree > li { position: relative; padding: 4px 0 4px 16px; font-size: .9rem; }
+  ul.tree > li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: .95em;
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--accent-c);
+  }
+  ul.tree ul {
+    list-style: none;
+    margin: 4px 0 2px 2px;
+    padding: 0 0 0 12px;
+    border-left: 2px dashed color-mix(in srgb, var(--accent-c) 45%, white);
+  }
+  ul.tree ul li { padding: 3px 0; font-size: .86rem; color: #334155; }
+  .note {
+    margin: 12px 16px 0;
+    padding: 8px 10px;
+    background: #f8fafc;
+    border-left: 4px solid var(--accent-c);
+    border-radius: 6px;
+    font-size: .82rem;
+    color: #64748b;
+  }
+  .wide { grid-column: 1 / -1; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; }
+  @media (max-width: 620px) { .two-col { grid-template-columns: 1fr; } }
+  .case {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, #334155, #475569);
+    color: #fff;
+    border-radius: 16px;
+    padding: 16px 20px;
+    box-shadow: 0 6px 18px rgba(15,23,42,.18);
+  }
+  .case h3 { margin: 0 0 6px; font-size: 1.02rem; }
+  .case p { margin: 0; font-size: .9rem; opacity: .95; }
+  .map-foot { text-align: center; margin-top: 28px; font-size: .8rem; color: #64748b; }
+
+  .back-row { text-align: center; margin-top: 26px; }
+
+  @media (max-width: 640px) {
+    .p-header, .title-block { padding-left: 22px; padding-right: 22px; }
+    .data-card, .actions { margin-left: 22px; margin-right: 22px; }
+    .data-row { grid-template-columns: 1fr; }
+    .data-label { padding: 10px 16px; }
+    .data-value { padding: 10px 16px 14px; }
+    .title-block h1 { font-size: 34px; }
+    .p-footer { flex-direction: column; gap: 6px; padding: 22px; }
+  }
+
+  @media print {
+    body { background: #fff; }
+    .topbar, .actions, .back-row, .map-foot { display: none !important; }
+    .view.mapa-view { display: none !important; }
+    .page { box-shadow: none; width: 100%; min-height: 100vh; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <button class="tab active" id="tab-portada" onclick="showView('portada')">Portada</button>
+  <button class="tab" id="tab-mapa" onclick="showView('mapa')">Mapa conceptual</button>
+</nav>
+
+<!-- ============ PORTADA ============ -->
+<section class="view portada-view active" id="view-portada">
+  <div class="portada-wrap">
+    <div class="page">
+
+      <header class="p-header">
+        <div class="brand">
+          <span class="big">U</span>
+          <span class="name">niversidad<br>del <b>Caribe</b></span>
+        </div>
+        <div class="brand-meta">
+          <span>2000</span>
+          <span>Cancún, Quintana Roo, México</span>
+        </div>
+        <div class="slogan">Conocimiento y cultura para el desarrollo humano</div>
+      </header>
+
+      <section class="title-block">
+        <div class="eyebrow">Materia</div>
+        <h1>Planeación estratégica</h1>
+        <div class="topic">Capítulo 5: Estrategias en acción</div>
+        <div class="rule"></div>
+      </section>
+
+      <section class="data-card">
+        <div class="data-row"><div class="data-label">Docente</div><div class="data-value">Juan Bautista Boggio Vázquez</div></div>
+        <div class="data-row"><div class="data-label">Alumno</div><div class="data-value">Ramon Adonay García Cano</div></div>
+        <div class="data-row"><div class="data-label">Carrera</div><div class="data-value">Innovación Empresarial</div></div>
+        <div class="data-row"><div class="data-label">Fecha</div><div class="data-value">Lunes 9 de noviembre de 2026</div></div>
+      </section>
+
+      <section class="actions">
+        <button class="btn" onclick="showView('mapa')">Ver mapa conceptual &rarr;</button>
+        <div class="btn-note">Cambia a la vista del mapa en esta misma página</div>
+      </section>
+
+      <footer class="p-footer">
+        <span class="date">Cancún, Quintana Roo, México</span>
+        <span>9 de noviembre de 2026</span>
+      </footer>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ MAPA CONCEPTUAL ============ -->
+<section class="view mapa-view" id="view-mapa">
+  <div class="mapa-wrap">
+    <div class="mapa">
+
+      <div class="map-head">
+        <span class="kicker">Administración estratégica · Capítulo 5</span>
+        <h1>Estrategias en acción</h1>
+        <p>David, F. R. · Conceptos de Administración Estratégica (14.ª ed.)</p>
+      </div>
+
+      <div class="root">
+        <h2>Estrategias en acción</h2>
+        <span>Cómo las organizaciones fijan objetivos, eligen estrategias y las ejecutan</span>
+      </div>
+      <div class="trunk"></div>
+      <div class="bus"></div>
+
+      <div class="grid" style="margin-top:26px">
+
+        <section class="branch" style="--accent-c:#0d9488">
+          <div class="branch-head"><span class="num">1</span>Objetivos a largo plazo</div>
+          <div class="branch-body">
+            <div class="group">
+              <h3>Qué son</h3>
+              <p style="margin:0;font-size:.9rem">Los resultados que se esperan al aplicar estrategias. Plazo típico: <b>2 a 5 años</b>.</p>
+            </div>
+            <div class="group">
+              <h3>Deben ser</h3>
+              <div class="chips">
+                <span class="chip">Cuantitativos</span><span class="chip">Medibles</span>
+                <span class="chip">Realistas</span><span class="chip">Comprensibles</span>
+                <span class="chip">Desafiantes</span><span class="chip">Jerárquicos</span>
+                <span class="chip">Alcanzables</span><span class="chip">Congruentes</span>
+              </div>
+            </div>
+            <div class="group">
+              <h3>Beneficios</h3>
+              <ul class="tree">
+                <li>Dan dirección</li>
+                <li>Permiten sinergia</li>
+                <li>Sirven como estándar de evaluación</li>
+                <li>Establecen prioridades y reducen incertidumbre</li>
+                <li>Ayudan a asignar recursos y diseñar tareas</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="branch" style="--accent-c:#0d9488">
+          <div class="branch-head"><span class="num">2</span>Tipos de objetivos</div>
+          <div class="branch-body">
+            <div class="two-col">
+              <div class="group">
+                <h3>Financieros</h3>
+                <ul class="tree">
+                  <li>Ingresos y utilidades</li>
+                  <li>Dividendos y márgenes</li>
+                  <li>Rendimiento sobre inversión</li>
+                  <li>Flujo de efectivo</li>
+                </ul>
+              </div>
+              <div class="group">
+                <h3>Estratégicos</h3>
+                <ul class="tree">
+                  <li>Participación de mercado</li>
+                  <li>Menor tiempo de entrega</li>
+                  <li>Liderazgo tecnológico</li>
+                  <li>Mejor calidad y cobertura</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="note">Sacrificar lo estratégico por ganancias inmediatas pone en riesgo la participación de mercado a largo plazo.</div>
+        </section>
+
+        <section class="branch" style="--accent-c:#7c3aed">
+          <div class="branch-head"><span class="num">3</span>Administración sin objetivos</div>
+          <div class="branch-body">
+            <p style="margin:0 0 8px;font-size:.88rem;color:#64748b">Formas que los estrategas deben evitar:</p>
+            <ul class="tree">
+              <li><b>Por extrapolación:</b> "si no está descompuesto, no lo arregles"</li>
+              <li><b>Por crisis:</b> solo reacciona a los problemas del día</li>
+              <li><b>Por factores subjetivos:</b> cada quien hace lo que cree</li>
+              <li><b>Por esperanzas:</b> confía en que la suerte llegará</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="branch" style="--accent-c:#e11d48">
+          <div class="branch-head"><span class="num">4</span>Cuadro de mando integral</div>
+          <div class="branch-body">
+            <p style="margin:0 0 8px;font-size:.88rem">Balanced Scorecard de <b>Kaplan y Norton</b> (Harvard). Equilibra medidas financieras y no financieras.</p>
+            <ul class="tree">
+              <li>Cliente</li>
+              <li>Procesos internos</li>
+              <li>Innovación y aprendizaje</li>
+              <li>Financiera (accionistas)</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="branch wide" style="--accent-c:#2563eb">
+          <div class="branch-head"><span class="num">5</span>Tipos de estrategias</div>
+          <div class="branch-body">
+            <div class="two-col">
+              <div class="group">
+                <h3>Integración (vertical y horizontal)</h3>
+                <ul class="tree">
+                  <li><b>Hacia adelante:</b> control de distribuidores o minoristas
+                    <ul><li>Ej.: Nike vende directo al consumidor</li></ul>
+                  </li>
+                  <li><b>Hacia atrás:</b> control de proveedores
+                    <ul><li>Ej.: Nestlé y los cafetaleros</li></ul>
+                  </li>
+                  <li><b>Horizontal:</b> control de competidores
+                    <ul><li>Ej.: Unilever y Alberto Culver</li></ul>
+                  </li>
+                </ul>
+              </div>
+              <div class="group">
+                <h3>Intensivas</h3>
+                <ul class="tree">
+                  <li><b>Penetración de mercado:</b> más vendedores, publicidad, cupones</li>
+                  <li><b>Desarrollo de mercado</b></li>
+                  <li><b>Desarrollo de producto:</b> mejorar lo actual, alto gasto en I+D</li>
+                </ul>
+              </div>
+              <div class="group">
+                <h3>Diversificación</h3>
+                <ul class="tree">
+                  <li><b>Relacionada:</b> cadenas de valor conectadas; busca sinergia (la más común)</li>
+                  <li><b>No relacionada:</b> cadenas de valor muy distintas</li>
+                </ul>
+              </div>
+              <div class="group">
+                <h3>Defensivas</h3>
+                <ul class="tree">
+                  <li><b>Recorte de gastos:</b> reducir costos y activos</li>
+                  <li><b>Desinversión:</b> vender una división o parte</li>
+                  <li><b>Liquidación:</b> vender todos los activos</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="note">Muchas organizaciones combinan estrategias, pero hacerlo en exceso es riesgoso: los recursos son limitados y hay que establecer prioridades.</div>
+        </section>
+
+        <section class="branch" style="--accent-c:#16a34a">
+          <div class="branch-head"><span class="num">6</span>Estrategias genéricas de Porter</div>
+          <div class="branch-body">
+            <ul class="tree">
+              <li><b>Liderazgo en costos</b>
+                <ul>
+                  <li>Tipo 1: bajo costo (precio más bajo)</li>
+                  <li>Tipo 2: mejor valor (mejor relación precio-valor)</li>
+                </ul>
+              </li>
+              <li><b>Diferenciación</b> (tipo 3): producto único, cliente poco sensible al precio</li>
+              <li><b>Enfoque</b>: un segmento pequeño
+                <ul>
+                  <li>Tipo 4: enfoque en bajo costo</li>
+                  <li>Tipo 5: enfoque en mejor valor</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="branch" style="--accent-c:#d97706">
+          <div class="branch-head"><span class="num">7</span>Medios para lograr estrategias</div>
+          <div class="branch-body">
+            <ul class="tree">
+              <li><b>Cooperación entre competidores</b>: aportan algo distintivo (tecnología, distribución)</li>
+              <li><b>Alianzas (joint ventures)</b>: asociación temporal o empresa con capital compartido</li>
+              <li><b>Fusiones y adquisiciones</b>: fusión amistosa, adquisición o toma hostil</li>
+              <li><b>Capital privado</b>: comprar barato para vender caro</li>
+              <li><b>Primero en actuar</b>: recursos raros, conocimiento y participación de mercado</li>
+              <li><b>Subcontratación (BPO)</b>: externalizar funciones de apoyo</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="branch" style="--accent-c:#0891b2">
+          <div class="branch-head"><span class="num">8</span>Niveles de estrategia</div>
+          <div class="branch-body">
+            <div class="two-col">
+              <div class="group">
+                <h3>Grandes (4)</h3>
+                <ul class="tree">
+                  <li>Corporativo</li>
+                  <li>Divisional</li>
+                  <li>Funcional</li>
+                  <li>Operacional</li>
+                </ul>
+              </div>
+              <div class="group">
+                <h3>Pequeñas (3)</h3>
+                <ul class="tree">
+                  <li>Empresarial</li>
+                  <li>Funcional</li>
+                  <li>Operacional</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="branch" style="--accent-c:#475569">
+          <div class="branch-head"><span class="num">9</span>Organizaciones no lucrativas y de gobierno</div>
+          <div class="branch-body">
+            <p style="margin:0 0 8px;font-size:.88rem">Aplican la misma planificación, pero <b>no pagan impuestos</b> y <b>no tienen accionistas</b>.</p>
+            <ul class="tree">
+              <li><b>Educativas:</b> planifican matrícula y oferta</li>
+              <li><b>Médicas:</b> nuevas líneas (atención en casa, rehabilitación)</li>
+              <li><b>Gubernamentales:</b> usar el dinero público de forma eficiente</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="case">
+          <h3>Caso de referencia: ExxonMobil</h3>
+          <p>Prototipo de excelencia en administración estratégica. Apostó a que el <b>gas natural</b> desplazaría al carbón como segunda fuente de energía hacia 2030, y por ello adquirió empresas de gas de esquisto como XTO Energy por 25 000 millones de dólares.</p>
+        </section>
+
+      </div>
+
+      <div class="back-row">
+        <button class="btn" onclick="showView('portada')">&larr; Volver a la portada</button>
+      </div>
+
+      <div class="map-foot">Mapa conceptual elaborado a partir del Capítulo 5 y complementado con fuentes externas.</div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  function showView(name) {
+    var isMap = name === 'mapa';
+    document.getElementById('view-portada').classList.toggle('active', !isMap);
+    document.getElementById('view-mapa').classList.toggle('active', isMap);
+    document.getElementById('tab-portada').classList.toggle('active', !isMap);
+    document.getElementById('tab-mapa').classList.toggle('active', isMap);
+    window.scrollTo(0, 0);
+    try { history.replaceState(null, '', isMap ? '#mapa' : '#portada'); } catch (e) {}
+  }
+  // Si se abre con #mapa, muestra el mapa directamente
+  if (location.hash === '#mapa') { showView('mapa'); }
+</script>
+</body>
+</html>
